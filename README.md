@@ -2,6 +2,7 @@
 
 ### Set up commands
 ```bash
+git clone https://github.com/kenegdane/go-ddoser
 go get "github.com/gamexg/proxyclient"
 go mod init go-ddoser
 go mod tidy
