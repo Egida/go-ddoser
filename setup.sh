@@ -1,4 +1,3 @@
-sudo apt update && sudo apt upgrade
 sudo apt install golang git
 git clone https://github.com/kenegdane/go-ddoser
 go get "github.com/gamexg/proxyclient"
