@@ -9,7 +9,13 @@ go mod init go-ddoser
 go mod tidy
 go build go-ddoser.go
 ```
-# Mỗi lần chạy luôn luôn phải:
+
+### Fast set up commands:
+```bash
+wget https://raw.githubusercontent.com/kenegdane/go-ddoser/main/setup.sh && bash setup.sh
 ```
+
+# Mỗi lần chạy luôn luôn phải:
+```bash
 ulimit -n 999999
 ```
