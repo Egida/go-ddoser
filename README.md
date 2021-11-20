@@ -1,24 +1,28 @@
-# go-ddoser
+# Go DDoser
+Denial of Service Attacks Using Golang
 
-### Set up commands
+### Usage
+<img src="https://imgur.com/aARCzV9.png" align="right" height="100">
+
 ```bash
 git clone https://github.com/kenegdane/go-ddoser
 cd go-ddoser
-go get "github.com/gamexg/proxyclient"
 go mod init go-ddoser
 go mod tidy
 go build go-ddoser.go
 ```
 
-### Fast set up commands:
+### Use an existing release
 ```bash
-wget https://raw.githubusercontent.com/kenegdane/go-ddoser/main/setup.sh && bash setup.sh
+wget https://github.com/kenegdane/go-ddoser/releases/download/latest/go-ddoser
 ```
 
-# Mỗi lần chạy luôn luôn phải:
+### Need to do before running:
 ```bash
 ulimit -n 999999
 ```
-### Lưu ý
-Mình sẽ không chịu trách nhiệm nếu các bạn sử dụng công cụ go-ddoser mục đích sau:
-* Sử dụng công cụ go-ddoser để thực hiện các hành vi vi phạm pháp luật của Nhà nước CHXHCN Việt Nam hiện hành và các quy định quốc tế đang được áp dụng tại Việt Nam.
+### Warning !!!
+<img src="https://imgur.com/CJjf1yk.png" align="left" height="150">
+I will not be responsible if you use the go-ddoser tool for the following purposes:
+
+Using the go-ddoser tool to perform acts that violate the laws of the current Socialist Republic of Vietnam and international regulations being applied in Vietnam.
