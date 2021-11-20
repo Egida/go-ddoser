@@ -150,7 +150,7 @@ func prepareRequests(_HOST string, _PORT string, _USERAGENTS []string, _PROXIES 
 }
 
 func main() {
-	runtime.GOMAXPROCS(4)
+	runtime.GOMAXPROCS(runtime.NumCPU())
 	_USERAGENTS := getUserAgents(500)
 	_HOST := os.Args[1]
 	_PORT := os.Args[2]
