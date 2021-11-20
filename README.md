@@ -21,6 +21,12 @@ wget https://github.com/kenegdane/go-ddoser/releases/download/latest/go-ddoser
 ```bash
 ulimit -n 999999
 ```
+
+### Usage:
+```bash
+./go-ddoser <HOST> <PORT> <THREADS> <PATH> <SOCKS FILE> <TIME> <METHOD GET/HEAD> 
+```
+
 ### Warning !!!
 <img src="https://imgur.com/CJjf1yk.png" align="left" height="150">
 I will not be responsible if you use the go-ddoser tool for the following purposes:
