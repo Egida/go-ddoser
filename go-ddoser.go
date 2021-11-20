@@ -142,9 +142,9 @@ func makeRequests(_HOST string, _PORT string, _USERAGENT string, _PROXY string, 
 }
 
 func prepareRequests(_HOST string, _PORT string, _USERAGENTS []string, _PROXIES []string, _PATH string, _METHOD string) {
-	_USERAGENT := _USERAGENTS[rand.Intn(len(_USERAGENTS))]
-	_PROXY := _PROXIES[rand.Intn(len(_PROXIES))]
 	for {
+        _USERAGENT := _USERAGENTS[rand.Intn(len(_USERAGENTS))]
+        _PROXY := _PROXIES[rand.Intn(len(_PROXIES))]
 		makeRequests(_HOST, _PORT, _USERAGENT, _PROXY, _PATH, _METHOD)
 	}
 }
