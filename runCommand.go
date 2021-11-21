@@ -10,13 +10,13 @@ import (
 
 type runT struct {
 	cli.Helper
-	Host     string `cli:"*host" usage:"your victim"`
-	Port     int    `cli:"port" dft:"80"`
-	Thread   int    `cli:"thread" dft:"500"`
+	Host     string `cli:"*host"`
+	Port     int    `cli:"p,port" dft:"80"`
+	Thread   int    `cli:"t,thread" dft:"500"`
 	Method   string `cli:"method" dft:"GET"`
 	Path     string `cli:"path" dft:"/"`
-	File     string `cli:"file" dft:"socks4.txt"`
-	Duration int    `cli:"d" dft:"10"`
+	File     string `cli:"f,file" dft:"socks4.txt"`
+	Duration int    `cli:"d,duration" dft:"10"`
 }
 
 var runCommand = &cli.Command{
