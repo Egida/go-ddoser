@@ -10,7 +10,7 @@ func TestRandom(t *testing.T) {
 
 func TestUserAgent(t *testing.T) {
 	ua := getUserAgents(500)
-	if 500 != len(ua) {
+	if len(ua) != 500 {
 		t.Error("This error cannot happen")
 	}
 

