@@ -15,8 +15,7 @@ jobs:
       - name: "Build release"
         run: |
           go mod tidy
-          go build go-ddoser.go
-
+          go build
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

