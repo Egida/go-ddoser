@@ -1,14 +1,11 @@
 package main
 
 import (
-	"net/http"
 	"testing"
 )
 
 func TestDdos(t *testing.T) {
-	// create http server for testing
-	go http.ListenAndServe(":8000", nil)
-	ddoser, error := NewDDoser("GET", "http://localhost:8000")
+	ddoser, error := NewDDoser("GET", "https://github.com:443", "72.210.208.101:4145")
 
 	if error != nil {
 		t.Error(error)
