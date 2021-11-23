@@ -11,5 +11,6 @@ require (
 	github.com/mkideal/cli v0.2.7
 	github.com/shadowsocks/shadowsocks-go v0.0.0-20200409064450-3e585ff90601 // indirect
 	golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871 // indirect
+	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2
 	gopkg.in/bufio.v1 v1.0.0-20140618132640-567b2bfa514e // indirect
 )

