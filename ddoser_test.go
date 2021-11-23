@@ -8,11 +8,11 @@ import (
 func TestDdos(t *testing.T) {
 	// create http server for testing
 	go http.ListenAndServe(":8000", nil)
-	ddoser, error := NewDDoser("abc", "GET")
+	ddoser, error := NewDDoser("GET", "http://localhost:8000")
 
 	if error != nil {
 		t.Error(error)
 	}
 
-	go ddoser.Do(getUserAgents(10), 5)
+	ddoser.Do(getUserAgents(10), 5)
 }

