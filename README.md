@@ -1,6 +1,8 @@
 # Go DDoser
 Denial of Service Attacks Using Golang
 
+![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
+
 ### Usage
 <img src="https://imgur.com/aARCzV9.png" align="right" height="100">
 
